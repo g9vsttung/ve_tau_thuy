@@ -3,8 +3,8 @@ import 'antd/dist/antd.css';
 import React, { Component, useEffect } from 'react';
 import moment from 'moment';
 import '../index.css';
-import { getAllService } from '../service/RouteService';
-import { getAllSeat } from '../service/SeatService';
+import {getAllSeat} from "../service/SeatService"
+import {getAllService} from "../service/RouteService"
 
 
 

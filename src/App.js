@@ -2,14 +2,18 @@ import logo from './logo.svg';
 import './App.css';
 import Header from './components/Header';
 import Frame from './components/Frame';
+import React, { Component } from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <Header/>
-      <Frame/>
-    </div>
-  );
+class App extends Component {
+  
+  render() {
+    return (
+      <div className="App">
+        <Header/>
+        <Frame/>
+      </div>
+    );
+  }
 }
 
 export default App;
