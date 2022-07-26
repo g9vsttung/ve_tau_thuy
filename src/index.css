@@ -5,9 +5,80 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url(assets/images/background.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+@keyframes example {
+  0%   {background-color: red;}
+  25%  {background-color: brown;}
+  50%  {background-color: darkblue;}
+  100% {background-color: green;}
+}
+.colorAnimation{
+  background-color: red;
+  animation-name: example;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
+}
+h5{
+  color: rgba(0, 0, 143, 1);
+}
+span{
+  display: block;
+  text-align: left;
+  margin-bottom: 10px;
+}
+#formDetail{
+  display: inline-block;
+  border: 1px groove  ;
+  align-items: center;
+  float: left;
+  width: 100%;
+}
+p{
+  margin: 0px;
+}
+.dropDownButton{
+  border: 1px solid grey;
+}
+.fontMainColor{
+  color: rgba(0, 0, 143, 1);
+}
+.ant-picker-footer{
+  display: none;
+}
+.h1Tab{
+    background: url(./assets/images/h1Tab.png) top left no-repeat;
+    margin: 0;
+    padding: 0;
+    height: 34px;
+    position: relative;
+    font: bold 16px Arial;
+}
+.parent {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.child {
+  flex: 1 0 10%; /* explanation below */
+
+  margin: 7px;
+  background-color: blue;
+}
+
+.verticalLine {
+  position: absolute;
+  background-color: grey;
+  width: 2px;
+  top: 15%;
+  bottom: 0px;
+  height: 65%;
+  left: 50%;
 }
