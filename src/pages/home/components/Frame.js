@@ -12,18 +12,23 @@ class Frame extends Component {
             listSeat: [],
             price: 0,
             quantity: 0,
-            total: 0
+            total: 0,
+            routeIdForm: "",
+            routeForm: "",
+            dateForm: "",
+            timeForm: "",
         }
     }
-    onSelectedSeat = (name) => {
+    onSelectedSeat = (id, name) => {
 
         let index = this.state.listSeat.findIndex(s => s.name === name);
         let list = [...this.state.listSeat];
         let seat = this.state.listSeat.find(x => x.name === name);
+        console.log(seat);
         if (seat.status === "available") {
             seat.status = "selected";
             list[index] = seat;
-            this.setState({ listSeat: [].concat(list), listSelected: this.state.listSelected.concat(name), quantity: this.state.quantity + 1, total: this.state.total + this.state.price });
+            this.setState({ listSeat: [].concat(list), listSelected: this.state.listSelected.concat({id, name}), quantity: this.state.quantity + 1, total: this.state.total + this.state.price });
         } else {
             seat.status = "available";
             list[index] = seat;
@@ -33,14 +38,19 @@ class Frame extends Component {
             this.setState({ listSeat: [].concat(list), listSelected: [].concat(listS), quantity: this.state.quantity - 1, total: this.state.total - this.state.price });
         }
     }
-    searchBoat = (list, money) => {
+    searchBoat = (list, money, routeId, routeName, date, time) => {
         this.setState({ listSeat: [] });
         this.setState({
             listSeat: [].concat(list), 
-            price: money
+            price: money,
+            routeIdForm : routeId,
+            routeForm : routeName,
+            dateForm : date,
+            timeForm :time
         });
     }
     render() {
+        console.log(this.state.listSelected)
         return (
             <div>
                 <Row>
@@ -52,7 +62,7 @@ class Frame extends Component {
                                     <FormDetail searchBoat={this.searchBoat} />
                                 </Col>
                                 <Col>
-                                    <Sologan quantity={this.state.quantity} price={this.state.price} total={this.state.total} listSeat={this.state.listSeat} onSelectedSeat={this.onSelectedSeat} />
+                                    <Sologan routeId={this.state.routeIdForm} route={this.state.routeForm} date={this.state.dateForm} time={this.state.timeForm} quantity={this.state.quantity} price={this.state.price} total={this.state.total} listSeat={this.state.listSeat} listSelected={this.state.listSelected} onSelectedSeat={this.onSelectedSeat} />
                                 </Col>
                                 <Col sm={3}>
                                     <Event />

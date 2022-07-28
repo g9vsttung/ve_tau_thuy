@@ -2,9 +2,8 @@ import { DatePicker, TimePicker } from 'antd';
 import 'antd/dist/antd.css';
 import React, { Component, useEffect } from 'react';
 import moment from 'moment';
-import '../index.css';
-import {getAllSeat} from "../service/SeatService"
-import {getAllService} from "../service/RouteService"
+import {getAllSeat} from "../../../service/SeatService"
+import {getAllService} from "../../../service/RouteService"
 
 
 
@@ -13,7 +12,8 @@ class FormDetail extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            routeForm: "",
+            routeIdForm: "",
+            routeForm:"",
             dateForm: "",
             timeForm: "",
             time:"",
@@ -36,13 +36,13 @@ class FormDetail extends Component {
             return current && current.valueOf() < moment().subtract(1, "days");
         }
         const onClickSearch= async ()=>{
-            var list = await getAllSeat(this.state.dateForm, this.state.timeForm, this.state.routeForm);       
+            var list = await getAllSeat(this.state.dateForm, this.state.timeForm, this.state.routeIdForm);       
             console.log(list);     
-             this.props.searchBoat(list, this.state.price);
+             this.props.searchBoat(list, this.state.price, this.state.routeIdForm, this.state.routeForm, this.state.dateForm, this.state.timeForm);
         }
         const onClickSelectRoute=(id, name, money)=>{
             document.getElementById('triggerId').innerHTML = name;
-            this.setState({routeForm: id, price: money});
+            this.setState({routeIdForm: id, price: money, routeForm: name});
             console.log("Price");console.log(money);
         }
         const elements =this.state.routes.map((e)=>{
