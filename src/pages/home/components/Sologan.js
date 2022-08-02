@@ -1,3 +1,4 @@
+import { HubConnectionBuilder } from '@microsoft/signalr';
 import { QRCodeSVG } from 'qrcode.react';
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
@@ -7,15 +8,51 @@ class Sologan extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            payment: false
+            payment: this.props.payment,
+            orderSuccess: false
         }
     }
-    onClickPayment = () => {
+    joinRoom = async () => {
+        try {
+          const KioskId = localStorage.getItem("KIOSK_ID");
+          const RoomId = KioskId;
+          const connection = new HubConnectionBuilder()
+            //.withUrl(HOST_SIGNALR)
+            .withUrl("https://localhost:5001/signalR")
+            .build();
+          connection.on(
+            "WEB_BOOKING_CHANNEL",
+            (KioskId, check) => {
+                console.log(check);
+                if(check){
+                    this.setState({
+                        orderSuccess:true
+                      });
+                }
+            }     
+          );
+          connection.on(
+            "WEB_CONNECTION_CHANNEL",
+            (KioskId, messsage) => {
+                console.log(messsage);   
+            }
+            
+          );
+          await connection.start();
+          await connection.invoke("joinRoom", { "WebId":KioskId,"RoomId":RoomId} );
+        } catch (e) {
+          console.log(e);
+        }
+      };
+    componentDidMount(){
+        this.joinRoom();
         this.setState({
-            payment: true
-        })
+            orderSuccess:false
+          });
     }
+
     render() {
+        // console.log(this.state.orderSuccess)
         if (typeof (this.props.listSeat) !== 'undefined' && this.props.listSeat != null) {
             if (this.props.listSeat.length === 0) {
                 return (
@@ -35,16 +72,17 @@ class Sologan extends Component {
                 }
 
                 );
-                if (this.state.payment){
-                    var listSelectedNameUrl = "";
+                if (this.props.payment){
+                    if(!this.state.orderSuccess){
+                        
+                        var listSelectedNameUrl = "";
                     var listSelectedIdUrl = "";
                     this.props.listSelected.map((seat) =>{
-                        console.log(seat.id)
                         listSelectedIdUrl=listSelectedIdUrl+"&listSeatId[]="+seat.id;
                         listSelectedNameUrl=listSelectedNameUrl+"&listSeatName[]="+seat.name;
                     });
-                    console.log(listSelectedIdUrl)
-                    var confirmUrl = `${window.location.origin}/confirm?route=${this.props.route}&routeId=${this.props.routeId}&date=${this.props.date}&time=${this.props.time}${listSelectedIdUrl}${listSelectedNameUrl}&price=${this.props.price}`;
+                    var confirmUrl = `${window.location.origin}/confirm?route=${this.props.route}&routeId=${this.props.routeId}&date=${this.props.date}&time=${this.props.time}${listSelectedIdUrl}${listSelectedNameUrl}&price=${this.props.price}&kioskId=${localStorage.getItem("KIOSK_ID")}&serviceApplicationId=${localStorage.getItem("SERVICE_APPLICATION_ID")}`;
+                    console.log(confirmUrl)
                     return (
                         <div>
                             <Row>
@@ -87,6 +125,18 @@ class Sologan extends Component {
                             </Row>
                         </div>
                     );
+                    }else{
+                        return (
+                            <div>
+                                <Row>
+                                    <Col>
+                                    <h2>Thành công r nhé</h2>
+                                    </Col>
+                                </Row>
+                            </div>
+                        );
+                    }
+                    
                 }
                     
                 else
@@ -129,7 +179,7 @@ class Sologan extends Component {
                                             <span className='fontMainColor' style={{ fontWeight: "bold", display: 'inline-block', float: 'right', fontSize: "30px" }}>
                                                 Tổng: <p style={{ display: "inline-block", color: "black" }}>{this.props.total.toLocaleString()}</p> vnđ
                                             </span>
-                                            <button style={{ float: "right", clear: "both", fontSize: "20px" }} onClick={() => this.onClickPayment()} type="button" className="btn btn-primary" >Thanh toán</button>
+                                            <button style={{ float: "right", clear: "both", fontSize: "20px" }} onClick={() => this.props.onClickPayment()} type="button" className="btn btn-primary" >Thanh toán</button>
                                         </Col>
                                     </Row>
                                 </div>

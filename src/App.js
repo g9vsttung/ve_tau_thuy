@@ -16,6 +16,12 @@ class App extends Component {
     }
     return result;
   }
+  componentDidMount=()=>{
+    const queryParams = new URLSearchParams(window.location.search);
+    localStorage.setItem("KIOSK_ID", queryParams.get("kioskId"));
+    localStorage.setItem("SERVICE_APPLICATION_ID", queryParams.get("serviceApplicationId"));
+    console.log(localStorage);
+  }
   render() {
     return (
       <Router>

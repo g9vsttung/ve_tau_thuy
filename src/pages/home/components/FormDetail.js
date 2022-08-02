@@ -36,14 +36,12 @@ class FormDetail extends Component {
             return current && current.valueOf() < moment().subtract(1, "days");
         }
         const onClickSearch= async ()=>{
-            var list = await getAllSeat(this.state.dateForm, this.state.timeForm, this.state.routeIdForm);       
-            console.log(list);     
+            var list = await getAllSeat(this.state.dateForm, this.state.timeForm, this.state.routeIdForm);          
              this.props.searchBoat(list, this.state.price, this.state.routeIdForm, this.state.routeForm, this.state.dateForm, this.state.timeForm);
         }
         const onClickSelectRoute=(id, name, money)=>{
             document.getElementById('triggerId').innerHTML = name;
             this.setState({routeIdForm: id, price: money, routeForm: name});
-            console.log("Price");console.log(money);
         }
         const elements =this.state.routes.map((e)=>{
             return <a key={e.id} className="dropdown-item" href="#" onClick={()=>onClickSelectRoute(e.id, e.fromPlace+"-"+e.toPlace, e.price)}>{e.fromPlace}-{e.toPlace}</a>
