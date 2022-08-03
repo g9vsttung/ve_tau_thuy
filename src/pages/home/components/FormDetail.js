@@ -1,6 +1,6 @@
 import { DatePicker, TimePicker } from 'antd';
 import 'antd/dist/antd.css';
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
 import {getAllSeat} from "../../../service/SeatService"
 import {getAllService} from "../../../service/RouteService"
@@ -26,7 +26,13 @@ class FormDetail extends Component {
         const routes = await getAllService();
         this.setState({routes});                                                                                                                                                                                                                                                
     }
-    
+    getDisabledHours = () => {
+        var hours = [];
+        for(var i =0; i <= moment().hour(); i++){
+            hours.push(i);
+        }
+        return hours;
+    }
     render() {
         const onDateChange = (date, dateString) => {
             this.setState({ dateForm: dateString });
@@ -59,7 +65,7 @@ class FormDetail extends Component {
                         <div className='dropDownButton'>
                             <button className="btn btn-block dropdown-toggle " type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false" >
-                                --Chọn tuyến tàu--
+                                -- Chọn tuyến tàu --
                             </button>
                             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">                               
                                 {elements}
@@ -69,7 +75,7 @@ class FormDetail extends Component {
                     <span className="fontMainColor">Ngày khởi hành: </span>
                     <DatePicker style={{ width: "100%", marginBottom: "10px" }} onChange={onDateChange} disabledDate={disabledDate} />
                     <span className="fontMainColor">Giờ khởi hành: </span>
-                    <TimePicker minuteStep={60} secondStep={60} showNow={false} value={this.state.time} style={{ width: "100%", marginBottom: "20px" }} onSelect={(value) => {
+                    <TimePicker format="HH" showNow={false} value={this.state.time} style={{ width: "100%", marginBottom: "20px" }} onSelect={(value) => {
                         const timeString = moment(value).format("HH:mm:ss");
                         this.setState({ timeForm: timeString });
                         this.setState({ time: value });

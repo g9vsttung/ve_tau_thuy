@@ -2,6 +2,7 @@ import { HubConnectionBuilder } from '@microsoft/signalr';
 import { QRCodeSVG } from 'qrcode.react';
 import React, { Component } from 'react';
 import { Row, Col } from 'react-bootstrap';
+import Checked from '../../../assets/images/checked.png'
 import Cano from '../../../assets/images/cano.jpg';
 import Seat from './Seat';
 class Sologan extends Component {
@@ -14,41 +15,40 @@ class Sologan extends Component {
     }
     joinRoom = async () => {
         try {
-          const KioskId = localStorage.getItem("KIOSK_ID");
-          const RoomId = KioskId;
-          const connection = new HubConnectionBuilder()
-            //.withUrl(HOST_SIGNALR)
-            .withUrl("https://localhost:5001/signalR")
-            .build();
-          connection.on(
-            "WEB_BOOKING_CHANNEL",
-            (KioskId, check) => {
-                console.log(check);
-                if(check){
-                    this.setState({
-                        orderSuccess:true
-                      });
+            const KioskId = localStorage.getItem("KIOSK_ID");
+            const RoomId = KioskId;
+            const connection = new HubConnectionBuilder()
+                //.withUrl(HOST_SIGNALR)
+                .withUrl("https://tikap.cf:9931/signalR")
+                .build();
+            connection.on(
+                "WEB_BOOKING_CHANNEL",
+                (KioskId, check) => {
+                    if (check) {
+                        this.setState({
+                            orderSuccess: true
+                        });
+                    }
                 }
-            }     
-          );
-          connection.on(
-            "WEB_CONNECTION_CHANNEL",
-            (KioskId, messsage) => {
-                console.log(messsage);   
-            }
-            
-          );
-          await connection.start();
-          await connection.invoke("joinRoom", { "WebId":KioskId,"RoomId":RoomId} );
+            );
+            connection.on(
+                "WEB_CONNECTION_CHANNEL",
+                (KioskId, messsage) => {
+                    console.log(messsage);
+                }
+
+            );
+            await connection.start();
+            await connection.invoke("joinRoom", { "WebId": KioskId, "RoomId": RoomId });
         } catch (e) {
-          console.log(e);
+            console.log(e);
         }
-      };
-    componentDidMount(){
+    };
+    componentDidMount() {
         this.joinRoom();
         this.setState({
-            orderSuccess:false
-          });
+            orderSuccess: false
+        });
     }
 
     render() {
@@ -57,7 +57,7 @@ class Sologan extends Component {
             if (this.props.listSeat.length === 0) {
                 return (
                     <div>
-                        <img src={Cano} style={{ width: "100%" }} alt=""/>
+                        <img src={Cano} style={{ width: "100%" }} alt="" />
                         <span className='colorAnimation' style={{ textAlign: "center", fontSize: "25px", fontStyle: "italic", fontWeight: "bold", color: "orange" }}>Mua vé ngay, giá trong tầm tay !</span>
                     </div>
                 );
@@ -65,80 +65,91 @@ class Sologan extends Component {
             else {
                 const elements = this.props.listSeat.map((e) => {
                     if (e.status === "unavailabe")
-                        return <Seat description={false} key={e.name} name={e.name} status={e.status} />                                                
-                        
+                        return <Seat description={false} key={e.name} name={e.name} status={e.status} />
+
                     else
-                        return <Seat key={e.name} id={e.id}  name={e.name} status={e.status} onSelectedSeat={this.props.onSelectedSeat} />
+                        return <Seat key={e.name} id={e.id} name={e.name} status={e.status} onSelectedSeat={this.props.onSelectedSeat} />
                 }
 
                 );
-                if (this.props.payment){
-                    if(!this.state.orderSuccess){
-                        
+                if (this.props.payment) {
+                    if (!this.state.orderSuccess) {
                         var listSelectedNameUrl = "";
-                    var listSelectedIdUrl = "";
-                    this.props.listSelected.map((seat) =>{
-                        listSelectedIdUrl=listSelectedIdUrl+"&listSeatId[]="+seat.id;
-                        listSelectedNameUrl=listSelectedNameUrl+"&listSeatName[]="+seat.name;
-                    });
-                    var confirmUrl = `${window.location.origin}/confirm?route=${this.props.route}&routeId=${this.props.routeId}&date=${this.props.date}&time=${this.props.time}${listSelectedIdUrl}${listSelectedNameUrl}&price=${this.props.price}&kioskId=${localStorage.getItem("KIOSK_ID")}&serviceApplicationId=${localStorage.getItem("SERVICE_APPLICATION_ID")}`;
-                    console.log(confirmUrl)
-                    return (
-                        <div>
-                            <Row>
-                                <Col>
-                                    <div style={{ width: "100%" }}>
-                                        <table className="table" style={{ width: "100%" }}>
-                                            <thead className="thead-inverse">
-                                                <tr>
-                                                    <th >Tuyến đi</th>
-                                                    <th>Ngày</th>
-                                                    <th>Giờ</th>
-                                                    <th>Giá</th>
-                                                    <th>Số vé</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td scope="row">{this.props.route}</td>
-                                                    <td>{this.props.date}</td>
-                                                    <td>{this.props.time}</td>
-                                                    <td>{this.props.price.toLocaleString()}đ</td>
-                                                    <td>{this.props.quantity}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </Col>
-                            </Row>
-                            <Row>
-                                <Col>
-                                {/* <a href={confirmUrl}>Test</a> */}
-                                    <QRCodeSVG
-                                        id='qrcode'
-                                        value={confirmUrl}
-                                        size={400}
-                                        level={'H'}
-                                        includeMargin={true}
-                                    />
-                                </Col>
-                            </Row>
-                        </div>
-                    );
-                    }else{
+                        var listSelectedIdUrl = "";
+                        var listNameSeat = "";
+                        this.props.listSelected.map((seat) => {
+                            listSelectedIdUrl = listSelectedIdUrl + "&listSeatId[]=" + seat.id;
+                            listSelectedNameUrl = listSelectedNameUrl + "&listSeatName[]=" + seat.name;
+                            listNameSeat = listNameSeat + seat.name + " - ";
+                            return true;
+                        });
+                        listNameSeat = listNameSeat.slice(0,-3);
+
+                        var confirmUrl = `${window.location.origin}/confirm?route=${this.props.route}&routeId=${this.props.routeId}&date=${this.props.date}&time=${this.props.time}${listSelectedIdUrl}${listSelectedNameUrl}&price=${this.props.price}&kioskId=${localStorage.getItem("KIOSK_ID")}&serviceApplicationId=${localStorage.getItem("SERVICE_APPLICATION_ID")}`;
+                        console.log(confirmUrl)
                         return (
                             <div>
                                 <Row>
                                     <Col>
-                                    <h2>Thành công r nhé</h2>
+                                        <div style={{ width: "100%" }}>
+                                            <table className="table" style={{ width: "100%" }}>
+                                                <thead className="thead-inverse">
+                                                    <tr>
+                                                        <th >Tuyến đi</th>
+                                                        <th>Ngày</th>
+                                                        <th>Giờ</th>
+                                                        <th>Giá</th>
+                                                        <th>Số vé</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>{this.props.route}</td>
+                                                        <td>{this.props.date}</td>
+                                                        <td>{this.props.time}</td>
+                                                        <td>{this.props.price.toLocaleString()}đ</td>
+                                                        <td>{this.props.quantity}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <span style={{display:"inline-block", fontWeight:"bold", fontSize:"25px"}}>Các ghế đã chọn: </span> <br/>
+                                        <div style={{height:"15px"}}></div>
+                                        <span style={{textAlign:"center", fontSize:"25px", border:"3px solid green", display:"inline", padding:"10px", borderRadius:"15px"}}>{listNameSeat}</span>
+                                        <div style={{height:"15px"}}></div>
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        {/* <a href={confirmUrl}>Test</a> */}
+                                        <QRCodeSVG
+                                            id='qrcode'
+                                            value={confirmUrl}
+                                            size={400}
+                                            level={'H'}
+                                            includeMargin={true}
+                                        />
+                                    </Col>
+                                </Row>
+                            </div>
+                        );
+                    } else {
+
+                        return (
+                            <div style={{marginTop:"30px"}}>
+                                <Row>
+                                    <Col>
+                                        <h3 style={{fontWeight:"bold"}}>Thanh toán thành công</h3>
+                                        <h3 style={{fontWeight:"bold"}}>Chúc quý khách có chuyến đi vui vẻ</h3>
+                                        <img alt='success' src={Checked} style={{  width: "25%", marginTop:"25px" }}></img>
                                     </Col>
                                 </Row>
                             </div>
                         );
                     }
-                    
+
                 }
-                    
+
                 else
                     return (
                         <div>

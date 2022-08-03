@@ -4,10 +4,11 @@ import logo from '../../../assets/images/logo.png';
 
 class Header extends Component {
     render() {
+        const queryParams = new URLSearchParams(window.location.search);
         return (
             <div style={{marginTop:"30px"}}>
-                <a>
-                    <img src={logo} style={{ marginRight: "20px", height: "150px" }}></img>
+                <a href={window.location.origin+`/?kioskId=${queryParams.get("kioskId")}&serviceApplicationId=${queryParams.get("serviceApplicationId")}`}>
+                    <img alt='logo' src={logo} style={{ marginRight: "20px", height: "150px" }}></img>
                     <p style={{ display: "inline-block", fontSize: "50px", fontStyle: "italic", WebkitTextStroke: "1px white", fontWeight: "bold", color: "rgba(0, 33, 176, 0.8)" }}>Vé Tàu Thủy</p>
                 </a>
                 <Row style={{marginTop:"50px"}}>
@@ -16,7 +17,7 @@ class Header extends Component {
                         <Row>
                             <Col style={{ padding: "0px 0px 0px 0px" }}>
                                 <h5 style={{ padding: "10px 10px 10px 10px", backgroundColor: "rgba(0, 0, 143, 1)", marginLeft: "1px", borderTopLeftRadius:"10px",borderBottomLeftRadius:"10px" }}>
-                                    <a href='' target={"_parent"} style={{ color: "white" }}>ĐẶT VÉ</a>
+                                    <a href={window.location.origin+`/?kioskId=${queryParams.get("kioskId")}&serviceApplicationId=${queryParams.get("serviceApplicationId")}`} target={"_parent"} style={{ color: "white" }}>ĐẶT VÉ</a>
                                 </h5>
                             </Col>
                             <Col style={{ padding: "0px 0px 0px 0px" }}>

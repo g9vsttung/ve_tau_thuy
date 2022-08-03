@@ -49,7 +49,7 @@ class Frame extends Component {
         }
     }
     searchBoat = (list, money, routeId, routeName, date, time) => {
-        this.setState({ listSeat: [], listSeat:[],price:0,quantity:0,total:0, payment:false});
+        this.setState({ listSelected: [], listSeat:[],price:0,quantity:0,total:0, payment:false});
         this.setState({
             listSeat: [].concat(list), 
             price: money,

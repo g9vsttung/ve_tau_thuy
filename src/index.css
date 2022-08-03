@@ -85,3 +85,9 @@ p{
 tr {
   font-size: 20px;
 }
+.popup-content {
+  margin: auto;
+  background: rgb(37, 63, 45);
+  width: 50%;
+  padding: 5px;
+}
