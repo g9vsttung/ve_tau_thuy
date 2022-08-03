@@ -3,13 +3,14 @@ import { Col, Row } from 'react-bootstrap';
 import logo from '../../assets/images/logo.png'
 import { HubConnectionBuilder } from '@microsoft/signalr';
 import { createOrder } from '../../service/OrderBookingService';
-
+import ReactLoading from 'react-loading';
 class Confirm extends Component {
     constructor(props) {
         super(props);
         this.state = {
             finish: false,
-            content: "Thanh toán thành công"
+            content: "Thanh toán thành công",
+            joinSuccess: false
         }
     }
     joinRoom = async () => {
@@ -35,6 +36,7 @@ class Confirm extends Component {
                 "WEB_CONNECTION_CHANNEL",
                 (KioskId, messsage) => {
                     console.log(messsage);
+                    this.setState({ joinSuccess: true })
                 }
 
             );
@@ -69,6 +71,12 @@ class Confirm extends Component {
     }
     render() {
         var params = new URLSearchParams(window.location.search);
+        let button;
+        if (this.state.joinSuccess) {
+            button = <button type="button" name="" id="" className="btn btn-primary" onClick={() => this.onConfirm()}>Xác nhận</button>;
+        } else {
+            button = <ReactLoading type='bars' color="#e28743" height="30px" />
+        }
         if (!this.state.finish)
             return (
                 <div>
@@ -102,9 +110,15 @@ class Confirm extends Component {
 
                         </Col>
                     </Row>
-                    <div>
-                        <button type="button" name="" id="" className="btn btn-primary" onClick={() => this.onConfirm()}>Xác nhận</button>
-                    </div>
+                    <Row>
+                        <Col>
+                            <div>
+                                {button}
+                            </div>
+                        </Col>
+                    </Row>
+
+
                 </div>
             );
         else
