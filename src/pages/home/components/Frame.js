@@ -18,11 +18,12 @@ class Frame extends Component {
             dateForm: "",
             timeForm: "",
             payment: false,
+            orderSuccess: false
         }
     }
-    resetData = ()=>{
+    setOrderSuccess=()=>{
         this.setState({
-
+            orderSuccess : true
         })
     }
     onClickPayment = () => {
@@ -56,7 +57,8 @@ class Frame extends Component {
             routeIdForm : routeId,
             routeForm : routeName,
             dateForm : date,
-            timeForm :time
+            timeForm :time,
+            orderSuccess : false
         });
     }
     render() {
@@ -71,7 +73,7 @@ class Frame extends Component {
                                     <FormDetail searchBoat={this.searchBoat} />
                                 </Col>
                                 <Col>
-                                    <Sologan onClickPayment={this.onClickPayment} routeId={this.state.routeIdForm} route={this.state.routeForm} date={this.state.dateForm} time={this.state.timeForm} quantity={this.state.quantity} price={this.state.price} total={this.state.total} listSeat={this.state.listSeat} listSelected={this.state.listSelected} onSelectedSeat={this.onSelectedSeat} payment={this.state.payment}/>
+                                    <Sologan setOrderSuccess={this.setOrderSuccess} orderSuccess={this.state.orderSuccess} onClickPayment={this.onClickPayment} routeId={this.state.routeIdForm} route={this.state.routeForm} date={this.state.dateForm} time={this.state.timeForm} quantity={this.state.quantity} price={this.state.price} total={this.state.total} listSeat={this.state.listSeat} listSelected={this.state.listSelected} onSelectedSeat={this.onSelectedSeat} payment={this.state.payment}/>
                                 </Col>
                                 <Col sm={3}>
                                     <Event />

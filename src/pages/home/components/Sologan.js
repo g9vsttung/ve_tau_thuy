@@ -9,8 +9,7 @@ class Sologan extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            payment: this.props.payment,
-            orderSuccess: false
+            payment: this.props.payment
         }
     }
     joinRoom = async () => {
@@ -25,9 +24,7 @@ class Sologan extends Component {
                 "WEB_BOOKING_CHANNEL",
                 (KioskId, check) => {
                     if (check) {
-                        this.setState({
-                            orderSuccess: true
-                        });
+                        this.props.setOrderSuccess();
                     }
                 }
             );
@@ -46,13 +43,9 @@ class Sologan extends Component {
     };
     componentDidMount() {
         this.joinRoom();
-        this.setState({
-            orderSuccess: false
-        });
     }
 
     render() {
-        // console.log(this.state.orderSuccess)
         if (typeof (this.props.listSeat) !== 'undefined' && this.props.listSeat != null) {
             if (this.props.listSeat.length === 0) {
                 return (
@@ -73,7 +66,7 @@ class Sologan extends Component {
 
                 );
                 if (this.props.payment) {
-                    if (!this.state.orderSuccess) {
+                    if (!this.props.orderSuccess) {
                         var listSelectedNameUrl = "";
                         var listSelectedIdUrl = "";
                         var listNameSeat = "";
