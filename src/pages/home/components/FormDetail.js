@@ -65,7 +65,7 @@ class FormDetail extends Component {
                         <div className='dropDownButton'>
                             <button className="btn btn-block dropdown-toggle " type="button" id="triggerId" data-toggle="dropdown" aria-haspopup="true"
                                 aria-expanded="false" >
-                                -- Chọn tuyến tàu --
+                                Chọn tuyến
                             </button>
                             <div className="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">                               
                                 {elements}
