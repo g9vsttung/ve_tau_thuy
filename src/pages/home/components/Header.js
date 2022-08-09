@@ -13,7 +13,7 @@ class Header extends Component {
                 </a>
                 <Row style={{marginTop:"50px"}}>
                     <Col></Col>
-                    <Col md={9}>
+                    <Col md={10}>
                         <Row>
                             <Col style={{ padding: "0px 0px 0px 0px" }}>
                                 <h5 style={{ padding: "10px 10px 10px 10px", backgroundColor: "rgba(0, 0, 143, 1)", marginLeft: "1px", borderTopLeftRadius:"10px",borderBottomLeftRadius:"10px" }}>

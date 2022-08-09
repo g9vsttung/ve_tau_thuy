@@ -66,7 +66,7 @@ class Frame extends Component {
             <div>
                 <Row>
                     <Col></Col>
-                    <Col sm={9} style={{ padding: "0px 0px 0px 0px" }}>
+                    <Col sm={10} style={{ padding: "0px 0px 0px 0px" }}>
                         <div style={{ width: "100%", backgroundColor: "white", padding: "30px 30px 30px 30px", height: "1000px", display: "block" }}>
                             <Row>
                                 <Col sm={3}>
