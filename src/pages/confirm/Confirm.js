@@ -103,7 +103,7 @@ class Confirm extends Component {
                                         <td>{params.get("date")}</td>
                                         <td>{params.get("time")}</td>
                                         <td>{params.get("price")}đ</td>
-                                        <td>{params.getAll("listSeatId").length}</td>
+                                        <td>{params.getAll("listSeatId[]").length}</td>
                                     </tr>
                                 </tbody>
                             </table>
