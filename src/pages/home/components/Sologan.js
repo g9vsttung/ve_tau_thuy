@@ -23,6 +23,7 @@ class Sologan extends Component {
             connection.on(
                 "WEB_BOOKING_CHANNEL",
                 (KioskId, check) => {
+                    console.log(check);
                     if (check) {
                         this.props.setOrderSuccess();
                     }
